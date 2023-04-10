@@ -1,3 +1,4 @@
+
 # API Clasificación de residuos
 
 API Que realiza las predicciones del modelo de visión por computador entrenado sobre la tecnología YOLO-V5
@@ -26,7 +27,7 @@ API Que realiza las predicciones del modelo de visión por computador entrenado 
 El repositorio de ***API Clasificación de residuos*** tiene como objetivo proveer las funcionalidades de detección de objetos de acuerdo al modelo previamente entrenado sobre la tecnología YOLO V5.
 
 ## Arquitectura
-En este enlace se encuentra la Arquitectura de componentes definida para la Solución: ![Análisis de Arquitectura ](https://TODO)
+En este enlace se encuentra la Arquitectura de componentes definida para la Solución: [Análisis de Arquitectura ](https://www.google.com)
  
 
 ## Construido con 
@@ -88,7 +89,7 @@ El equipo involucrado en la implementación de estos componentes se detalla a co
 
  - Equipo técnico: 
 	 - Miguel Angel Mora Miranda <miamoram@udistrital.edu.co>
-     - Jesid Alberto 
+   - Jesid Alberto Escobar <Jaescobarp@udistrital.edu.co>
 
 ---
 
