@@ -47,9 +47,9 @@ El código de encuentra implementado con Python 3 y FastAPI las librerías usada
     ```
 5. Ejecute el servidor para iniciar la aplicación.
     ```sh
-    uvicorn main:app --host 0.0.0.0 --port 8000
+    uvicorn main:app --host 0.0.0.0 --port 8001
     ```
-6. Abra http://localhost:8000/ para visualizar la interface del API
+6. Abra http://localhost:8001/ para visualizar la interface del API
 
 ---
 
