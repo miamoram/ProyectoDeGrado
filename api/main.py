@@ -62,7 +62,7 @@ async def detect_trash_return_base64_img(file: bytes = File(...)):
     input_image = get_image_from_bytes(file)
     results = model(input_image)
     results.render()  # updates results.imgs with boxes and labels
-    for img in results.imgs:
+    for img in results.ims:
         bytes_io = io.BytesIO()
         img_base64 = Image.fromarray(img)
         img_base64.save(bytes_io, format="jpeg")
