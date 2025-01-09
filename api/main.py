@@ -1,13 +1,12 @@
+import os
 from fastapi import FastAPI, File
-from segmentation import get_yolov5, get_image_from_bytes
-from starlette.responses import Response
-import io
-from PIL import Image
-import json
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import Response
+from segmentation import get_image_from_bytes, get_yolo
+import uvicorn
+import cv2
 
-
-model = get_yolov5()
+yolo_obj = get_yolo(model_name="best_yolo11.pt", model_path="api/model/")
 
 app = FastAPI(
     title="API Clasificación de residuos Eco Sistema 🌎♻️",
@@ -51,19 +50,32 @@ def get_health():
 @app.post("/object-to-json")
 async def detect_trash_return_json_result(file: bytes = File(...)):
     input_image = get_image_from_bytes(file)
-    results = model(input_image)
-    detect_res = results.pandas().xyxy[0].to_json(orient="records")  # JSON img1 predictions
-    detect_res = json.loads(detect_res)
-    return {"result": detect_res}
+    results = yolo_obj.model(input_image)
+    json_result = results[0].summary()
+    return json_result
+    #detect_res = results.pandas().xyxy[0].to_json(orient="records")  # JSON img1 predictions
+    #detect_res = json.loads(detect_res)
+    #return {"result": detect_res}
 
 
 @app.post("/object-to-img")
 async def detect_trash_return_base64_img(file: bytes = File(...)):
     input_image = get_image_from_bytes(file)
-    results = model(input_image)
-    results.render()  # updates results.imgs with boxes and labels
+    results = yolo_obj.model(input_image)    
+    # Obtener la imagen anotada
+    annotated_image = results[0].plot()  # `plot` genera la imagen con anotaciones    
+    # Convertir la imagen anotada a formato JPEG
+    _, buffer = cv2.imencode('.jpg', annotated_image)
+    return Response(content=buffer.tobytes(), media_type="image/jpeg")
+
+    """results.render()  # updates results.imgs with boxes and labels
     for img in results.ims:
         bytes_io = io.BytesIO()
         img_base64 = Image.fromarray(img)
         img_base64.save(bytes_io, format="jpeg")
-    return Response(content=bytes_io.getvalue(), media_type="image/jpeg")
+    return Response(content=bytes_io.getvalue(), media_type="image/jpeg")"""
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
